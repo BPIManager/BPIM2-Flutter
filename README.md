@@ -122,6 +122,7 @@ flutter run   # 接続中のデバイス / エミュレータで起動
 
 [MIT License](LICENSE)
 
-本アプリは BPIM2 (https://bpi2.poyashi.me) の公式クライアントです。
+本アプリは BPIM2 (https://bpi2.poyashi.me) の機能拡張クライアントです。  
+
 beatmania IIDX および eAMUSEMENT はコナミアミューズメント株式会社の商標です。
 本アプリは beatmania IIDX および KONAMI グループ各社とは一切無関係の個人が作成したファンメイドツールです。
