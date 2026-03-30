@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../widgets/disclaimer_dialog.dart';
 import 'eagate_import_screen.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     allowsInlineMediaPlayback: true,
     supportMultipleWindows: true,
     javaScriptCanOpenWindowsAutomatically: true,
+    allowsBackForwardNavigationGestures: true,
     userAgent:
         'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
   );
@@ -113,45 +115,59 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
+  Future<void> _onPopInvoked(bool didPop, dynamic result) async {
+    if (didPop) return;
+    final canGoBack = await _bpiController?.canGoBack() ?? false;
+    if (canGoBack) {
+      await _bpiController?.goBack();
+    } else {
+      SystemNavigator.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri('https://bpi2.poyashi.me/'),
-              ),
-              initialSettings: _settings,
-              onWebViewCreated: (c) => _bpiController = c,
-              onLoadStop: _onPageLoaded,
-              onCreateWindow: _onCreateWindow,
-            ),
-            if (_importing)
-              const Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: LinearProgressIndicator(),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _importing ? null : _onFabPressed,
-        backgroundColor: const Color(0xFF260606),
-        foregroundColor: Colors.white,
-        child: _importing
-            ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: _onPopInvoked,
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              InAppWebView(
+                initialUrlRequest: URLRequest(
+                  url: WebUri('https://bpi2.poyashi.me/'),
                 ),
-              )
-            : const Icon(Icons.sync),
+                initialSettings: _settings,
+                onWebViewCreated: (c) => _bpiController = c,
+                onLoadStop: _onPageLoaded,
+                onCreateWindow: _onCreateWindow,
+              ),
+              if (_importing)
+                const Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: LinearProgressIndicator(),
+                ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _importing ? null : _onFabPressed,
+          backgroundColor: const Color(0xFF260606),
+          foregroundColor: Colors.white,
+          child: _importing
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                )
+              : const Icon(Icons.sync),
+        ),
       ),
     );
   }
