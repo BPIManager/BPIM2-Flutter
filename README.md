@@ -7,6 +7,8 @@ beatmania IIDX の スコア管理 Web アプリ「[BPIM2](https://bpi2.poyashi.
 
 - BPI Manager 2 の全機能をネイティブアプリとして利用
 - eAMUSEMENT GATE からスコアを自動取得してワンタップでインポート（右下の更新ボタンから実行）
+  - eAMUSEMENT プレミアムに加入済みの場合、公式CSVを使用してスコアを取り込みます
+  - eAMUSEMENT プレミアムに加入していない場合、[IIDX-Scraping-Bookmarklet](https://github.com/BPIManager/IIDX-Scraping-Bookmarklet)を使用してスコアを集計し取り込みます。(1分程度かかり、ミスカウントやプレイ時間は記録されません)
 
 ## ダウンロード
 
@@ -17,9 +19,9 @@ beatmania IIDX の スコア管理 Web アプリ「[BPIM2](https://bpi2.poyashi.
 | Android          | `bpim2-flutter-android.apk` |
 | Windows          | `bpim2-flutter-windows.zip` |
 
-> **注意**:
-> これらは野良アプリです。
-> セキュリティ上の懸念がある場合は、後述の手順に従ってご自身でビルドしてください。
+> **注意**:  
+> これらは野良アプリです。  
+> セキュリティ上の懸念がある場合は、後述の手順に従ってご自身でビルドしてください。  
 > iOS端末持ってないのでリリースファイルには含まれませんが、自己ビルドで使おうと思えば使えるのではないかと思います。
 
 ---
@@ -31,7 +33,7 @@ beatmania IIDX の スコア管理 Web アプリ「[BPIM2](https://bpi2.poyashi.
 ### eAMUSEMENT スコア自動取得機能について
 
 - 本アプリは `flutter_inappwebview` を使用して **eAMUSEMENT GATE** (`p.eagate.573.jp`) に WebView でアクセスし、スコアダウンロードページから CSV データを取得します。
-- スコア取得時に `assets/scraper.js`（[IIDX-Scraping-Bookmarklet](https://github.com/BPIManager/IIDX-Scraping-Bookmarklet) をベースとした JavaScript）を eAMUSEMENT GATE のページ上で実行します。
+- スコア取得時に `assets/scraper.js`（ をベースとした JavaScript）を eAMUSEMENT GATE のページ上で実行します。
 - **eAMUSEMENT のログイン情報（ID・パスワード）は当アプリのサーバーには一切送信されません。** ログインは eAMUSEMENT 公式ページ上で直接行われます。
 - ただし、理論的にはID・パスワードを窃取しようと思えばできる仕組みです。
 - ソースコードはすべて公開されています。不安な場合はコードをソースコードを確認した上で、ご自身でビルドしたものをご利用ください。
