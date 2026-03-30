@@ -17,7 +17,8 @@ beatmania IIDX の スコア管理 Web アプリ「[BPIM2](https://bpi2.poyashi.
 | Android          | `bpim2-flutter-android.apk` |
 | Windows          | `bpim2-flutter-windows.zip` |
 
-> **注意**: これらは自己責任ビルドです。
+> **注意**:
+> これらは野良アプリです。
 > セキュリティ上の懸念がある場合は、後述の手順に従ってご自身でビルドしてください。
 > iOS端末持ってないのでリリースファイルには含まれませんが、自己ビルドで使おうと思えば使えるのではないかと思います。
 
