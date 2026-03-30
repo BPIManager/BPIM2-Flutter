@@ -131,7 +131,7 @@ class _EagateImportScreenState extends State<EagateImportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('スコア取得'),
-        backgroundColor: const Color(0xFF5B21B6),
+        backgroundColor: const Color(0xFF260606),
         foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.close),
