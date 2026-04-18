@@ -70,14 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
     _pendingCsv = null;
     final csvJson = jsonEncode(csv);
 
-    await Future.delayed(const Duration(milliseconds: 1500));
     if (!mounted) return;
 
     await controller.evaluateJavascript(
       source:
           '''
-      (function() {
-        const ta = document.querySelector('textarea#csv-data');
+      (async function() {
+        const ta = await new Promise((resolve, reject) => {
+          const deadline = Date.now() + 10000;
+          const check = () => {
+            const el = document.querySelector('textarea#csv-data');
+            if (el) return resolve(el);
+            if (Date.now() > deadline) return reject(new Error('timeout'));
+            setTimeout(check, 100);
+          };
+          check();
+        }).catch(() => null);
         if (!ta) return 'ERROR: textarea#csv-data not found';
         const setter = Object.getOwnPropertyDescriptor(
           window.HTMLTextAreaElement.prototype, 'value'
@@ -96,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         btn.click();
         return 'OK';
       })();
-    ''',
+      ''',
     );
 
     if (mounted) setState(() => _importing = false);
