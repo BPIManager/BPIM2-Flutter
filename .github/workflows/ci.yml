@@ -72,48 +72,11 @@ jobs:
           name: android-apk
           path: bpim2-flutter-android.apk
 
-  build-windows:
-    name: Build Windows EXE
-    needs: verify
-    if: github.event_name == 'push'
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.x"
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Generate icons & splash
-        run: |
-          dart run flutter_launcher_icons
-          dart run flutter_native_splash:create
-
-      - name: Build Windows (release)
-        run: flutter build windows --release
-
-      - name: Package as ZIP
-        run: |
-          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath bpim2-flutter-windows.zip
-        shell: pwsh
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-zip
-          path: bpim2-flutter-windows.zip
-
   # GitHub Release の作成。tag push (v*.*.*) の場合はそのタグ名を、
   # master への通常 push の場合は build-YYYYMMDD-HHMMSS-<sha> を自動生成してタグ付けする。
   release:
     name: Create GitHub Release
-    needs: [build-android, build-windows]
+    needs: [build-android]
     runs-on: ubuntu-latest
     concurrency:
       group: release
@@ -128,11 +91,6 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: android-apk
-          path: dist/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: windows-zip
           path: dist/
 
       - name: Resolve release tag
@@ -158,7 +116,6 @@ jobs:
             | プラットフォーム | ファイル |
             | --- | --- |
             | Android | `bpim2-flutter-android.apk` |
-            | Windows | `bpim2-flutter-windows.zip` |
 
             ### インストール方法
 
@@ -167,13 +124,8 @@ jobs:
             2. 「提供元不明のアプリ」のインストールを許可
             3. APK をタップしてインストール
 
-            **Windows**
-            1. `bpim2-flutter-windows.zip` をダウンロードして解凍
-            2. `bpim2_flutter.exe` を実行
-
             > この APK はデバッグ証明書で署名されています。詳しくは [README](https://github.com/${{ github.repository }}/blob/main/README.md) のセキュリティ注意事項をご確認ください。
           files: |
             dist/bpim2-flutter-android.apk
-            dist/bpim2-flutter-windows.zip
           draft: false
           prerelease: false
