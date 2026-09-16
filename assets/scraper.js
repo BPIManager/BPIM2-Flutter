@@ -14,7 +14,7 @@
     "最終プレー日時"
   ];
 
-  const ver = (location.href.match(/\/game\/2dx\/(\d+)\//) || [null, "33"])[1];
+  const ver = (location.href.match(/\/game\/2dx\/(\d+)\//) || [null, "34"])[1];
   const POST_URL = `https://p.eagate.573.jp/game/2dx/${ver}/djdata/music/difficulty.html`;
 
   const notify = (data) => window.flutter_inappwebview.callHandler('ScraperChannel', JSON.stringify(data));

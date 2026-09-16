@@ -16,7 +16,7 @@ class _EagateImportScreenState extends State<EagateImportScreen> {
   String _statusText = '';
 
   final _scoreUrl = WebUri(
-    'https://p.eagate.573.jp/game/2dx/33/djdata/score_download.html?style=SP',
+    'https://p.eagate.573.jp/game/2dx/34/djdata/score_download.html?style=SP',
   );
 
   final _settings = InAppWebViewSettings(
